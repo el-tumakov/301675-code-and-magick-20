@@ -27,6 +27,7 @@
 
   var closeSetup = function () {
     setup.classList.add('hidden');
+    setup.style = '';
 
     document.removeEventListener('keydown', documentKeydownEscHandler);
     setupClose.removeEventListener('click', setupCloseClickHandler);
