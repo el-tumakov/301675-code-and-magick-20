@@ -11,6 +11,7 @@
   var eyesInput = setup.querySelector('input[name=\"eyes-color\"');
   var setupFireball = setup.querySelector('.setup-fireball-wrap');
   var fireballInput = setup.querySelector('input[name=\"fireball-color\"');
+  var dialogHandle = setup.querySelector('.upload');
 
   var openSetup = function () {
     setup.classList.remove('hidden');
@@ -23,6 +24,10 @@
     setupWizardCoat.addEventListener('click', setupWizardCoatClickHandler);
     setupWizardEyes.addEventListener('click', setupWizardEyesClickHandler);
     setupFireball.addEventListener('click', setupFireballClickHandler);
+    dialogHandle.addEventListener(
+        'mousedown',
+        window.dragDialog.dialogHandleMouseDownHandler
+    );
   };
 
   var closeSetup = function () {
@@ -37,6 +42,10 @@
     setupWizardCoat.removeEventListener('click', setupWizardCoatClickHandler);
     setupWizardEyes.removeEventListener('click', setupWizardEyesClickHandler);
     setupFireball.removeEventListener('click', setupFireballClickHandler);
+    dialogHandle.removeEventListener(
+        'mousedown',
+        window.dragDialog.dialogHandleMouseDownHandler
+    );
   };
 
   var documentKeydownEscHandler = function (evt) {
