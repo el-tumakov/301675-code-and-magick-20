@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var WIZARDS_COUNT = 4;
+
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = setup.querySelector('.setup-close');
@@ -12,6 +14,8 @@
   var setupFireball = setup.querySelector('.setup-fireball-wrap');
   var fireballInput = setup.querySelector('input[name=\"fireball-color\"');
   var dialogHandle = setup.querySelector('.upload');
+  var similarWizards = document.querySelector('.setup-similar');
+  var form = setup.querySelector('.setup-wizard-form');
 
   var openSetup = function () {
     setup.classList.remove('hidden');
@@ -28,6 +32,8 @@
         'mousedown',
         window.dragDialog.dialogHandleMouseDownHandler
     );
+    window.backend.load(loadSuccessHandler, errorHandler);
+    form.addEventListener('submit', saveSubmitHandler);
   };
 
   var closeSetup = function () {
@@ -46,6 +52,8 @@
         'mousedown',
         window.dragDialog.dialogHandleMouseDownHandler
     );
+    window.wizards.removeWizards();
+    form.removeEventListener('submit', saveSubmitHandler);
   };
 
   var documentKeydownEscHandler = function (evt) {
@@ -94,4 +102,33 @@
   setupOpen.addEventListener('keydown', function (evt) {
     window.utils.isEnterEvent(evt, openSetup);
   });
+
+  var loadSuccessHandler = function (data) {
+    similarWizards.classList.remove('hidden');
+
+    for (var i = 0; i < WIZARDS_COUNT; i++) {
+      var wizardData = window.utils.getRandomElement(data);
+
+      window.wizards.renderWizards(wizardData);
+    }
+  };
+
+  var saveSubmitHandler = function (evt) {
+    window.backend.save(new FormData(form), closeSetup, errorHandler);
+
+    evt.preventDefault();
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 })();
