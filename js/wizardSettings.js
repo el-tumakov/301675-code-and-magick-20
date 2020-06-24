@@ -11,13 +11,13 @@
   var coatClickHandler = function () {
     window.utils.
       changeColor(coat, window.data.COAT_COLORS, coatInput);
-    window.wizards.updateWizards();
+    window.debounce(window.wizards.updateWizards);
   };
 
   var eyesClickHandler = function () {
     window.utils.
       changeColor(eyes, window.data.EYES_COLORS, eyesInput);
-    window.wizards.updateWizards();
+    window.debounce(window.wizards.updateWizards);
   };
 
   var fireballClickHandler = function () {
