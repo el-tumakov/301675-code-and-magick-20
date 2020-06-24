@@ -60,11 +60,22 @@
     }
   };
 
+  var elementsComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+
   window.utils = {
     getRandomElement: getRandomElement,
     getMaxElement: getMaxElement,
     changeColor: changeColor,
     isEscEvent: isEscEvent,
-    isEnterEvent: isEnterEvent
+    isEnterEvent: isEnterEvent,
+    elementsComparator: elementsComparator
   };
 })();

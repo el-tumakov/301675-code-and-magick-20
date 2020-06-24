@@ -1,18 +1,13 @@
 'use strict';
 
 (function () {
-  var WIZARDS_COUNT = 4;
-
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = setup.querySelector('.setup-close');
   var setupUserName = setup.querySelector('.setup-user-name');
   var setupWizardCoat = setup.querySelector('.setup-wizard .wizard-coat');
-  var coatInput = setup.querySelector('input[name=\"coat-color\"');
   var setupWizardEyes = setup.querySelector('.setup-wizard .wizard-eyes');
-  var eyesInput = setup.querySelector('input[name=\"eyes-color\"');
   var setupFireball = setup.querySelector('.setup-fireball-wrap');
-  var fireballInput = setup.querySelector('input[name=\"fireball-color\"');
   var dialogHandle = setup.querySelector('.upload');
   var similarWizards = document.querySelector('.setup-similar');
   var form = setup.querySelector('.setup-wizard-form');
@@ -25,9 +20,18 @@
     setupClose.addEventListener('keydown', setupCloseKeydownEnterHandler);
     setupUserName.addEventListener('focus', setupUserNameFocusHandler);
     setupUserName.addEventListener('blur', setupUserNameBlurHandler);
-    setupWizardCoat.addEventListener('click', setupWizardCoatClickHandler);
-    setupWizardEyes.addEventListener('click', setupWizardEyesClickHandler);
-    setupFireball.addEventListener('click', setupFireballClickHandler);
+    setupWizardCoat.addEventListener(
+        'click',
+        window.wizardSettings.coatClickHandler
+    );
+    setupWizardEyes.addEventListener(
+        'click',
+        window.wizardSettings.eyesClickHandler
+    );
+    setupFireball.addEventListener(
+        'click',
+        window.wizardSettings.fireballClickHandler
+    );
     dialogHandle.addEventListener(
         'mousedown',
         window.dragDialog.dialogHandleMouseDownHandler
@@ -45,9 +49,18 @@
     setupClose.removeEventListener('keydown', setupCloseKeydownEnterHandler);
     setupUserName.removeEventListener('focus', setupUserNameFocusHandler);
     setupUserName.removeEventListener('blur', setupUserNameBlurHandler);
-    setupWizardCoat.removeEventListener('click', setupWizardCoatClickHandler);
-    setupWizardEyes.removeEventListener('click', setupWizardEyesClickHandler);
-    setupFireball.removeEventListener('click', setupFireballClickHandler);
+    setupWizardCoat.removeEventListener(
+        'click',
+        window.wizardSettings.coatClickHandler
+    );
+    setupWizardEyes.removeEventListener(
+        'click',
+        window.wizardSettings.eyesClickHandler
+    );
+    setupFireball.removeEventListener(
+        'click',
+        window.wizardSettings.fireballClickHandler
+    );
     dialogHandle.removeEventListener(
         'mousedown',
         window.dragDialog.dialogHandleMouseDownHandler
@@ -78,21 +91,6 @@
     document.addEventListener('keydown', documentKeydownEscHandler);
   };
 
-  var setupWizardCoatClickHandler = function () {
-    window.utils.
-      changeColor(setupWizardCoat, window.data.COAT_COLORS, coatInput);
-  };
-
-  var setupWizardEyesClickHandler = function () {
-    window.utils.
-      changeColor(setupWizardEyes, window.data.EYES_COLORS, eyesInput);
-  };
-
-  var setupFireballClickHandler = function () {
-    window.utils.
-      changeColor(setupFireball, window.data.FIREBALL_COLORS, fireballInput);
-  };
-
   setupOpen.addEventListener('click', function (evt) {
     evt.preventDefault();
 
@@ -103,14 +101,13 @@
     window.utils.isEnterEvent(evt, openSetup);
   });
 
+  var wizards = [];
   var loadSuccessHandler = function (data) {
+    window.setup.wizards = data;
+
     similarWizards.classList.remove('hidden');
 
-    for (var i = 0; i < WIZARDS_COUNT; i++) {
-      var wizardData = window.utils.getRandomElement(data);
-
-      window.wizards.renderWizards(wizardData);
-    }
+    window.wizards.updateWizards();
   };
 
   var saveSubmitHandler = function (evt) {
@@ -130,5 +127,9 @@
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.setup = {
+    wizards: wizards
   };
 })();
