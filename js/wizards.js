@@ -46,7 +46,9 @@
   };
 
   var updateWizards = function () {
-    window.setup.wizards.sort(function (left, right) {
+    var wizards = window.setup.wizards.slice();
+
+    wizards.sort(function (left, right) {
       var rankDiff = getRank(right) - getRank(left);
 
       if (rankDiff === 0) {
@@ -59,7 +61,7 @@
     removeWizards();
 
     for (var i = 0; i < WIZARDS_COUNT; i++) {
-      renderWizard(window.setup.wizards[i]);
+      renderWizard(wizards[i]);
     }
   };
 
